@@ -42,7 +42,7 @@ function addCityToDOM(id, city, description, image) {
         <h5>${city}</h5>
         <p>${description}</p>
       </div>
-      <img class="img-responsive" src="${image}"><div>
+      <img class="img-responsive" src="${image}"></div>
       </a>
       `;
       container.innerHTML = innerHTML;
