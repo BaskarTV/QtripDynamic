@@ -132,6 +132,7 @@
              * example: http://localhost:8081/?city=bengaluru => window.location.search would return "?city=bengaluru"
              */
             let city = getCityFromURL(window.location.search);
+             
 
             //Fetches the adventures for the particular city
             adventures = await fetchAdventures(city);
