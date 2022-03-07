@@ -5,6 +5,7 @@ function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
   const params = new URLSearchParams(search);
+  
   let cityName = params.get("city")
   return cityName;
 }
