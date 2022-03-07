@@ -50,7 +50,7 @@ function addAdventureToDOM(adventures) {
     </a>
         
   `;
-  document.getElementById("data").appendChild(divElem);
+  document.getElementById("data").appendChild(divElem); 
 });
 }
 
@@ -59,14 +59,29 @@ function addAdventureToDOM(adventures) {
 function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
-
+  let newlist = [];
+  for(let i=0; i<list.length; i++){
+    if(list[i].duration >=low && list[i].duration <=high){
+      newlist.push(list[i]);
+    }
+  }
+  return newlist;
 }
+
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
-
+ let filterList = [];
+ categoryList.forEach((key)=>{
+   list.forEach((element)=>{
+     if(element.category===key){
+       filterList.push(element);
+     }
+   })
+ });
+ return filterList;
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -80,7 +95,85 @@ function filterFunction(list, filters) {
   // TODO: MODULE_FILTERS
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
+  let categoryList = filters.category;
 
+
+  if (filters.duration == "" && filters.category.length == 0) {
+    return list;
+  } else if (filters.duration == "" && filters.category.length > 0) {
+    let filteredList = filterByCategory(list, categoryList);
+    return filteredList;
+  } else if (filters.duration.length > 0) {
+    if (filters.category.length === 0) {
+      let lowValString;
+      let highValString;
+      let lowValNumber;
+      let highValNumber;
+
+      if (filters.duration.length === 3) {
+        lowValString = filters.duration.charAt(0);
+        highValString = filters.duration.charAt(2);
+        lowValNumber = parseInt(lowValString, 10);
+        highValNumber = parseInt(highValString, 10);
+      } else if (filters.duration.length === 5) {
+        let lowVal1 = filters.duration.charAt(0);
+        let lowVal2 = filters.duration.charAt(1);
+        lowValString = lowVal1 + "" + lowVal2;
+        let highVal1 = filters.duration.charAt(3);
+        let highVal2 = filters.duration.charAt(4);
+        highValString = highVal1 + "" + highVal2;
+        lowValNumber = parseInt(lowValString, 10);
+        highValNumber = parseInt(highValString, 10);
+      }
+      let filteredList = filterByDuration(list, lowValNumber, highValNumber);
+      return filteredList;
+
+    } else if (filters.duration.length > 0) {
+      let filteredListArr;
+      if (filters.category.length > 0) {
+        let lowValString;
+        let highValString;
+        let lowValNumber;
+        let highValNumber;
+
+        if (filters.duration.length === 3) {
+          lowValString = filters.duration.charAt(0);
+          highValString = filters.duration.charAt(2);
+          lowValNumber = parseInt(lowValString, 10);
+          highValNumber = parseInt(highValString, 10);
+        } else if (filters.duration.length === 5) {
+          let lowVal1 = filters.duration.charAt(0);
+          let lowVal2 = filters.duration.charAt(1);
+          lowValString = lowVal1 + "" + lowVal2;
+          let highVal1 = filters.duration.charAt(3);
+          let highVal2 = filters.duration.charAt(4);
+          highValString = highVal1 + "" + highVal2;
+          lowValNumber = parseInt(lowValString, 10);
+          highValNumber = parseInt(highValString, 10);
+        }
+        let durationFiltered = filterByDuration(
+          list,
+          lowValNumber,
+          highValNumber
+        );
+        let categoryFiltered = filterByCategory(list, categoryList);
+        function extractFromId(arr1, arr2) {
+          let finalDisplayArr = [];
+          for (let i = 0; i < arr1.length; i++) {
+            for (let j = 0; j < arr2.length; j++) {
+              if (arr1[i].id === arr2[j].id) {
+                finalDisplayArr.push(arr1[i]);
+              }
+            }
+          }
+          return finalDisplayArr;
+        }
+
+        filteredListArr = extractFromId(durationFiltered, categoryFiltered);
+      }
+      return filteredListArr;
+    }
+  }
 
   // Place holder for functionality to work in the Stubs
   return list;
@@ -90,7 +183,8 @@ function filterFunction(list, filters) {
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
   // 1. Store the filters as a String to localStorage
-
+   let filter = JSON.stringify(filters);
+   localStorage.setItem("filters",filter)
   return true;
 }
 
@@ -98,8 +192,9 @@ function saveFiltersToLocalStorage(filters) {
 function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
   // 1. Get the filters from localStorage and return String read as an object
+  let filters = JSON.parse(localStorage.getItem("filters"));
 
-
+return filters
   // Place holder for functionality to work in the Stubs
   return null;
 }
@@ -111,6 +206,16 @@ function getFiltersFromLocalStorage() {
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
   // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
+let clELM =document.getElementById("category-list");
+let category = filters["category"];
+category.forEach((e)=>{
+  let hElm = document.createElement("h6");
+  hElm.setAttribute("class", "category-filter");
+  hElm.innerHTML= e;
+  clELM.appendChild(hElm);
+})
+
+document.getElementById("duration-select").value=filters["duration"]
 
 }
 export {
