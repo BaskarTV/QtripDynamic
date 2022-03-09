@@ -8,6 +8,7 @@ function getCityFromURL(search) {
   
   let cityName = params.get("city")
   return cityName;
+
 }
 
 //Implementation of fetch call with a paramterized input based on city
@@ -52,8 +53,10 @@ function addAdventureToDOM(adventures) {
   `;
   document.getElementById("data").appendChild(divElem); 
 });
-}
 
+
+
+}
 
 //Implementation of filtering by duration which takes in a list of adventures, the lower bound and upper bound of duration and returns a filtered list of adventures.
 function filterByDuration(list, low, high) {
@@ -69,6 +72,8 @@ function filterByDuration(list, low, high) {
 }
 
 
+
+
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
@@ -82,6 +87,7 @@ function filterByCategory(list, categoryList) {
    })
  });
  return filterList;
+
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -175,6 +181,7 @@ function filterFunction(list, filters) {
     }
   }
 
+
   // Place holder for functionality to work in the Stubs
   return list;
 }
@@ -185,6 +192,7 @@ function saveFiltersToLocalStorage(filters) {
   // 1. Store the filters as a String to localStorage
    let filter = JSON.stringify(filters);
    localStorage.setItem("filters",filter)
+
   return true;
 }
 
@@ -195,6 +203,8 @@ function getFiltersFromLocalStorage() {
   let filters = JSON.parse(localStorage.getItem("filters"));
 
 return filters
+
+
   // Place holder for functionality to work in the Stubs
   return null;
 }
